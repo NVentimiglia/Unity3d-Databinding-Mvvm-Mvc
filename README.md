@@ -75,7 +75,7 @@ Once you have your model defined and a mockup of your view using Unity's uGUI UI
 The binding context is responsible for gluing your model to your view elements. Once set
 child binders will update with a listing of properties to bind to. 
 
-![alt tag](https://github.com/NVentimiglia/Unity3d-Databinding-Mvvm-Mvc/blob/master/textbinding.png)
+![Binding context](https://github.com/NVentimiglia/Unity3d-Databinding-Mvvm-Mvc/blob/master/bindingcontext.png)
 
 This script sits at the root of your UI and operates in one of three modes.
 
@@ -106,7 +106,7 @@ feel that I have neglected a non specialized binder, let me know and I will make
 Using a binder is straight forward. Just drag and drop the script onto the control that it will
 bind to. For instance if you want databinding on an Input Field include the Input Field binder as well.
 
-![alt tag](http://github.com/NVentimiglia/Unity3d-Databinding-Mvvm-Mvc/blob/master/textbinding.png)
+![Text Binder](http://github.com/NVentimiglia/Unity3d-Databinding-Mvvm-Mvc/blob/master/textbinding.png)
 
 
 #### AudioManager
