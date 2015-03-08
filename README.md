@@ -108,7 +108,6 @@ bind to. For instance if you want databinding on an Input Field include the Inpu
 
 ![Text Binder](http://github.com/NVentimiglia/Unity3d-Databinding-Mvvm-Mvc/blob/master/textbinding.png)
 
-
 #### AudioManager
 
 I have included a AudioManager in this library. The AudioManager extends Unity's audio system with audio layers. This will allow the players to fine tune audio volume by layer (music, sound, ect).
