@@ -75,7 +75,7 @@ Once you have your model defined and a mockup of your view using Unity's uGUI UI
 The binding context is responsible for gluing your model to your view elements. Once set
 child binders will update with a listing of properties to bind to. 
 
-![alt tag](./bindingcontext.png)
+![alt tag](https://github.com/NVentimiglia/Unity3d-Databinding-Mvvm-Mvc/blob/master/textbinding.png)
 
 This script sits at the root of your UI and operates in one of three modes.
 
