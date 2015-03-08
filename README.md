@@ -106,7 +106,7 @@ feel that I have neglected a non specialized binder, let me know and I will make
 Using a binder is straight forward. Just drag and drop the script onto the control that it will
 bind to. For instance if you want databinding on an Input Field include the Input Field binder as well.
 
-![alt tag](https://github.com/NVentimiglia/Unity3d-Databinding-Mvvm-Mvc/blob/master/textbinding.png)
+![alt tag](http://github.com/NVentimiglia/Unity3d-Databinding-Mvvm-Mvc/blob/master/textbinding.png)
 
 
 #### AudioManager
