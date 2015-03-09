@@ -2,7 +2,7 @@
 
 Nicholas Ventimiglia | AvariceOnline.com
 
-Databinding is a mechanism 'connect' your UI widgets (buttons, input, text, lists) to 'view scripts'. This strategy is necessary for the Model-View-ViewModel architecture that is very popular in the C# world. In MVVM Your views's properties, fields and methods are 'observed' by the UI elements and any changes to your view's are communicated to the UI elements so they may update worry free.
+Databinding is a mechanism to 'connect' your UI widgets (buttons, input, text, lists) to 'view scripts'. This strategy is necessary for the Model-View-ViewModel architecture that is very popular in the C# world. In MVVM Your views's properties, fields and methods are 'observed' by the UI elements and any changes to your view's are communicated to the UI elements so they may update worry free.
 
 
 - Supports inheritance, interfaces, structs and using DLLs
@@ -22,6 +22,7 @@ Databinding is a mechanism 'connect' your UI widgets (buttons, input, text, list
 - [Foundation.Tasks](https://github.com/NVentimiglia/Unity3d-Async-Task) Async Library
 - [Foundation.Localization](https://github.com/NVentimiglia/Unity3d-Localization) Translation Library
 - Localization may be omitted by using the NoLocalization compilation directive
+- [Foundation.Injector](https://github.com/NVentimiglia/Unity3d-Service-Injector) Is mentioned in the comments. It is not needed but I personally use it so that I dont need to reference my components in the editor.
 
 ## Model Logic
 
@@ -75,7 +76,7 @@ Once you have your model defined and a mockup of your view using Unity's uGUI UI
 The binding context is responsible for gluing your model to your view elements. Once set
 child binders will update with a listing of properties to bind to. 
 
-![alt tag](https://github.com/NVentimiglia/Unity3d-Databinding-Mvvm-Mvc/blob/master/textbinding.png)
+![Binding context](https://github.com/NVentimiglia/Unity3d-Databinding-Mvvm-Mvc/blob/master/bindingcontext.png)
 
 This script sits at the root of your UI and operates in one of three modes.
 
@@ -106,8 +107,7 @@ feel that I have neglected a non specialized binder, let me know and I will make
 Using a binder is straight forward. Just drag and drop the script onto the control that it will
 bind to. For instance if you want databinding on an Input Field include the Input Field binder as well.
 
-![alt tag](http://github.com/NVentimiglia/Unity3d-Databinding-Mvvm-Mvc/blob/master/textbinding.png)
-
+![Text Binder](https://github.com/NVentimiglia/Unity3d-Databinding-Mvvm-Mvc/blob/master/textbinding.png)
 
 #### AudioManager
 
