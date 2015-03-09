@@ -132,6 +132,9 @@ Part of the Unity3d Foundation toolkit. A collection of utilities for making hig
 - **Cloud** : Parse-like storage and account services using a ASP.NET MVC back end. Need to authenticate your users? Reset passwords with branded emails? Save high scores or character data in a database? Maybe write your own authoritative back end? This is it.
 - **Lobby** : The ultimate example scene. Everything you need to deploy for a game, minus the actual game play.
 
+## License
+[MIT License](https://github.com/NVentimiglia/Unity3d-Async-Task/blob/master/README.md)
+
 ## Donations
 [I accept donations via papal. Your money is an objective measure of my self esteme.](https://www.paypal.com/us/cgi-bin/webscr?cmd=_send-money&nav=1&email=nick@simplesys.us)
 
