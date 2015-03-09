@@ -2,7 +2,7 @@
 
 Nicholas Ventimiglia | AvariceOnline.com
 
-Databinding is a mechanism 'connect' your UI widgets (buttons, input, text, lists) to 'view scripts'. This strategy is necessary for the Model-View-ViewModel architecture that is very popular in the C# world. In MVVM Your views's properties, fields and methods are 'observed' by the UI elements and any changes to your view's are communicated to the UI elements so they may update worry free.
+Databinding is a mechanism to 'connect' your UI widgets (buttons, input, text, lists) to 'view scripts'. This strategy is necessary for the Model-View-ViewModel architecture that is very popular in the C# world. In MVVM Your views's properties, fields and methods are 'observed' by the UI elements and any changes to your view's are communicated to the UI elements so they may update worry free.
 
 
 - Supports inheritance, interfaces, structs and using DLLs
