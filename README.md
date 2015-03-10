@@ -136,5 +136,5 @@ Part of the Unity3d Foundation toolkit. A collection of utilities for making hig
 [MIT License](https://github.com/NVentimiglia/Unity3d-Async-Task/blob/master/README.md)
 
 ## Donations
-[I accept donations via papal. Your money is an objective measure of my self esteme.](https://www.paypal.com/us/cgi-bin/webscr?cmd=_send-money&nav=1&email=nick@simplesys.us)
+[I accept donations via papal. Your money is an objective measure of my self esteem.](https://www.paypal.com/us/cgi-bin/webscr?cmd=_send-money&nav=1&email=nick@simplesys.us)
 
