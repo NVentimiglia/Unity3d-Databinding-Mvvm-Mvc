@@ -15,8 +15,7 @@ namespace Foundation.Databinding.Model
 {
     /// <summary>
     /// Implements IObservableModel on behalf of other objects.
-    /// This allows the use of (most of) IObservableModel on non IBindable objects. 
-    /// Change notification requires INotifyPropertyChanged or IBindable implementation
+    /// Change notification requires IObservableModel implementation
     /// </summary>
     public class ModelBinder : IObservableModel, IDisposable
     {

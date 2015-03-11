@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Foundation.Databinding.Model
 { 
     /// <summary>
-    /// Raised by the IObservableModel. Contains property name, value and sender.
+    /// Like INotifyPropertyChanged. Contains property name, value and sender.
     /// </summary>
     [Serializable]
     public class ObservableMessage : IDisposable

@@ -84,7 +84,12 @@ namespace Foundation.Databinding.Model
             _binder = null;
         }
 
-        public void NotifyProperty(string memberName, object paramater)
+        /// <summary>
+        /// Notifies listeners of a change
+        /// </summary>
+        /// <param name="memberName"></param>
+        /// <param name="paramater"></param>
+        public virtual void NotifyProperty(string memberName, object paramater)
         {
             RaiseBindingUpdate(memberName, paramater);
         }

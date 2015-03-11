@@ -37,6 +37,9 @@ namespace Foundation.Databinding.Model
         /// </summary>
         protected bool IsApplicationQuit { get; private set; }
 
+        /// <summary>
+        /// Virtual, Initializes Binder
+        /// </summary>
         protected virtual void Awake()
         {
             if (_bindingMessage == null)
@@ -45,6 +48,9 @@ namespace Foundation.Databinding.Model
                 _binder = new ModelBinder(this);
         }
 
+        /// <summary>
+        /// Virtual, Disposes
+        /// </summary>
         protected virtual void OnDestroy()
         {
             if (IsApplicationQuit)
