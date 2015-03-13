@@ -9,13 +9,12 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using Foundation.Databinding.Components;
 using Foundation.Databinding.Model;
 using Foundation.Databinding.View;
 using UnityEditor;
 using UnityEngine;
 
-namespace Foundation.Core.Editor
+namespace Foundation.Databinding.Editor
 {
     /// <summary>
     /// Handles the finding of the Context

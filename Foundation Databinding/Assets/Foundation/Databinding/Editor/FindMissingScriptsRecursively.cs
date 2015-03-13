@@ -1,4 +1,4 @@
-﻿// --------------------------------------
+// --------------------------------------
 //  Unity3d Mvvm Toolkit and Lobby
 //  FindMissingScriptsRecursively.cs
 //  copyright (c) 2014 Nicholas Ventimiglia, http://avariceonline.com
@@ -9,7 +9,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Foundation.Core.Editor
+namespace Foundation.Databinding.Editor
 {
     public class FindMissingScriptsRecursively : EditorWindow
     {
@@ -18,7 +18,7 @@ namespace Foundation.Core.Editor
         [MenuItem("Window/FindMissingScriptsRecursively")]
         public static void ShowWindow()
         {
-            EditorWindow.GetWindow(typeof(FindMissingScriptsRecursively));
+            GetWindow(typeof(FindMissingScriptsRecursively));
         }
 
         public void OnGUI()

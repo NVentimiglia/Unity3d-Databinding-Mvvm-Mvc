@@ -6,7 +6,7 @@ using System.Reflection;
 using Foundation.Databinding.Model;
 using UnityEngine;
 
-namespace Foundation.Core.Editor
+namespace Foundation.Databinding.Editor
 {
     public static class EditorMembersHelper
     {

@@ -1,7 +1,6 @@
-﻿using UnityEngine;
 using UnityEditor;
 
-namespace Foundation.Core.Editor
+namespace Foundation.Databinding.Editor
 {
     [InitializeOnLoad]
     public class HierarchySortKeybindings
