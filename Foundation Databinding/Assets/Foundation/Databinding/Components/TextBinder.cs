@@ -71,7 +71,7 @@ namespace Foundation.Databinding.Components
                 }
                 else
                 {
-                    Label.text = string.Format(FormatString, s);
+                    Label.text = string.Format(FormatString, arg);
                 }
             }
         }
