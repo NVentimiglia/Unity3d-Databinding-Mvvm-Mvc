@@ -57,6 +57,9 @@ namespace FullSerializer
         /// <returns></returns>
         public static T Deserialize<T>(string json)
         {
+            if (string.IsNullOrEmpty(json))
+                return default(T);
+
             fsData data;
             fsResult fsFailure1 = fsJsonParser.Parse(json, out data);
             if (fsFailure1.Failed)
@@ -80,6 +83,9 @@ namespace FullSerializer
         /// <returns></returns>
         public static object Deserialize(string json, Type type)
         {
+            if (string.IsNullOrEmpty(json))
+                return null;
+
             // step 1: parse the JSON data
             fsData data = fsJsonParser.Parse(json);
 
