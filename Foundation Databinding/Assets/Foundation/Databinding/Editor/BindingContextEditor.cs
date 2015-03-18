@@ -84,7 +84,7 @@ namespace Foundation.Databinding.Editor
 
             if (i != index)
             {
-                Target.ModelNamespace = i > 1 ? BindingContext.NameSpaces[i] : null;
+                Target.ModelNamespace = i > 0 ? BindingContext.NameSpaces[i] : null;
                 EditorUtility.SetDirty(target);
             }
         }
