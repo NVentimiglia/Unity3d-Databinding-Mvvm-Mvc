@@ -14,7 +14,9 @@ namespace Foundation.Databinding.Components
     /// <summary>
     /// An audio source for playing UI sounds. Depends on the Audio2D Listener.
     /// </summary>
+#if !UNITY_WSA && !UNITY_EDITOR
     [Serializable]
+#endif
     [AddComponentMenu("Foundation/Databinding/Audio2DSource")]
     public class Audio2DSource : MonoBehaviour
     {

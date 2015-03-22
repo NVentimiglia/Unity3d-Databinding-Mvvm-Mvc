@@ -12,7 +12,9 @@ namespace Foundation.Databinding.Model
     /// <summary>
     /// Like INotifyPropertyChanged. Contains property name, value and sender.
     /// </summary>
+#if !UNITY_WSA
     [Serializable]
+#endif
     public class ObservableMessage : IDisposable
     {
         /// <summary>

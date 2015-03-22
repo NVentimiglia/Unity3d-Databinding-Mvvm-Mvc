@@ -10,6 +10,8 @@ using System.Reflection;
 
 namespace Foundation.Databinding.Model
 {
+
+
     public static class ReflectionExt
     {
         /// <summary>
@@ -20,7 +22,11 @@ namespace Foundation.Databinding.Model
         /// <returns></returns>
         public static bool HasAttribute<T>(this MemberInfo m) where T : Attribute
         {
+#if UNITY_WSA
+            return GetAttribute<T>(m) != null;
+#else
             return Attribute.IsDefined(m, typeof(T));
+#endif
         }
 
         /// <summary>
@@ -41,12 +47,17 @@ namespace Foundation.Databinding.Model
         /// <returns></returns>
         public static T GetAttribute<T>(this object m, string memberName) where T : Attribute
         {
+#if UNITY_WSA
+            var member = m.GetType().GetTypeInfo().DeclaredMembers.FirstOrDefault(o => o.Name == memberName);
+#else           
             var member = m.GetType().GetMember(memberName, BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic).FirstOrDefault();
+#endif
 
             if (member == null)
                 return null;
 
             return member.GetAttribute<T>();
+
         }
 
         /// <summary>
@@ -98,11 +109,11 @@ namespace Foundation.Databinding.Model
         {
             if (member is MethodInfo)
             {
-                var method = ((MethodInfo) member);
+                var method = ((MethodInfo)member);
 
                 if (method.GetParameters().Any())
                 {
-                    method.Invoke(instance,  new[] { value });
+                    method.Invoke(instance, new[] { value });
                 }
                 else
                 {
@@ -143,7 +154,11 @@ namespace Foundation.Databinding.Model
         /// <returns></returns>
         public static object GetMemberValue(this object instance, string propertyName)
         {
+#if UNITY_WSA
+            var member = instance.GetType().GetTypeInfo().DeclaredMembers.FirstOrDefault(o => o.Name == propertyName);
+#else
             var member = instance.GetType().GetMember(propertyName).FirstOrDefault();
+#endif
             if (member == null)
                 return null;
 
@@ -163,7 +178,7 @@ namespace Foundation.Databinding.Model
         /// <returns></returns>
         public static T GetMemberValue<T>(this MemberInfo member, object instance)
         {
-            return (T) GetMemberValue(member, instance);
+            return (T)GetMemberValue(member, instance);
 
         }
     }

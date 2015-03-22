@@ -37,7 +37,7 @@ namespace Foundation.Databinding.Model
                 _bindableInstance.OnBindingUpdate += _bindableInstance_OnBindingUpdate;
 
         }
-        
+
         void _bindableInstance_OnBindingUpdate(ObservableMessage obj)
         {
             if (_onBindingEvent != null)
@@ -85,8 +85,11 @@ namespace Foundation.Databinding.Model
         [HideInInspector]
         public object GetValue(string memberName)
         {
+#if UNITY_WSA
+            var member = _myType.GetTypeInfo().DeclaredMembers.FirstOrDefault(o => o.Name == memberName);
+#else
             var member = _myType.GetMember(memberName).FirstOrDefault();
-
+#endif
             if (member == null)
             {
                 Debug.LogError("Member not found ! " + memberName + " " + _myType);
@@ -98,28 +101,44 @@ namespace Foundation.Databinding.Model
 
         public object GetValue(string memberName, object paramater)
         {
-            var member = _myType.GetMethod(memberName);
-
+#if UNITY_WSA
+            var member = _myType.GetTypeInfo().DeclaredMembers.FirstOrDefault(o => o.Name == memberName);
+#else
+            var member = _myType.GetMember(memberName).FirstOrDefault();
+#endif
             if (member == null)
             {
                 Debug.LogError("Member not found ! " + memberName + " " + _myType);
                 return null;
             }
 
-
-            if (paramater != null)
+            if (member is MethodInfo)
             {
-                var p = member.GetParameters().FirstOrDefault();
-                if (p == null)
+                var meth = (member as MethodInfo);
+                if (paramater != null)
                 {
-                    return GetValue(memberName);
+                    var p = meth.GetParameters().FirstOrDefault();
+                    if (p == null)
+                    {
+                        return GetValue(memberName);
+                    }
+
+                    var converted = ConverterHelper.ConvertTo(p.GetType(), paramater);
+                    return meth.Invoke(_instance, new[] { converted });
                 }
 
-                var converted = ConverterHelper.ConvertTo(p.GetType(), paramater);
-                return member.Invoke(_instance, new[] { converted });
+                return meth.Invoke(_instance, null);
+            }
+            if (member is PropertyInfo)
+            {
+#if UNITY_WSA
+                return (member as PropertyInfo).GetValue(_instance);
+#else
+                return (member as PropertyInfo).GetValue(_instance, null);
+#endif
             }
 
-            return member.Invoke(_instance, null);
+            return (member as FieldInfo).GetValue(_instance);
         }
 
         [HideInInspector]
@@ -130,7 +149,11 @@ namespace Foundation.Databinding.Model
 
         public void Command(string memberName, object paramater)
         {
+#if UNITY_WSA
+            var member = _myType.GetTypeInfo().DeclaredMembers.FirstOrDefault(o => o.Name == memberName);
+#else
             var member = _myType.GetMember(memberName).FirstOrDefault();
+#endif
 
             if (member == null)
             {
@@ -182,7 +205,7 @@ namespace Foundation.Databinding.Model
             {
                 _bindableInstance.OnBindingUpdate -= _bindableInstance_OnBindingUpdate;
             }
-            
+
             _myType = null;
             _instance = null;
             _insanceBehaviour = null;

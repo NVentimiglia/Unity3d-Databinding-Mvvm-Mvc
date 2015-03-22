@@ -34,9 +34,6 @@ public class DatabindingTester : ObservableBehaviour
         get { return _property2; }
         set
         {
-            if (_property2 == value)
-                return;
-            _property2 = value;
             Set(ref _property2, value);
         }
     }

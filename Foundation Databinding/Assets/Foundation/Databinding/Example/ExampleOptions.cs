@@ -41,6 +41,8 @@ namespace Foundation.Databinding.Example
 
         #region option event
 
+        public UnityEngine.UI.Text Output;
+
         /// <summary>
         /// Raised when an option value changes
         /// </summary>
@@ -52,6 +54,8 @@ namespace Foundation.Databinding.Example
 
             if (OnOptionChanged != null)
                 OnOptionChanged(memberName, paramater);
+
+            Output.text = string.Format("{0} = {1}", memberName, paramater);
         }
 
         #endregion
@@ -100,16 +104,9 @@ namespace Foundation.Databinding.Example
             get { return _useCensor; }
             set
             {
-                if (_useCensor == value)
-                    return;
-                _useCensor = value;
-                NotifyProperty("UseCensor", value);
-
-                // todo update service
+                Set(ref _useCensor, value);
             }
         }
-
-
 
         [SerializeField]
         private string _userName = "Player 1";

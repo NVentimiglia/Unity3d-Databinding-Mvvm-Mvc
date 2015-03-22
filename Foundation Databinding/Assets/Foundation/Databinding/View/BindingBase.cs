@@ -9,6 +9,9 @@ using System.Linq;
 using Foundation.Databinding.Model;
 using Foundation.Tasks;
 using UnityEngine;
+#if UNITY_WSA
+using System.Reflection;
+#endif
 
 namespace Foundation.Databinding.View
 {
@@ -19,7 +22,9 @@ namespace Foundation.Databinding.View
     /// <remarks>
     /// If you want to write your own databinder, inherit from this.
     /// </remarks>
-    [Serializable]
+#if !UNITY_WSA
+        [Serializable]
+#endif
     [ExecuteInEditMode]
     public abstract class BindingBase : MonoBehaviour, IBindingElement
     {
@@ -40,7 +45,9 @@ namespace Foundation.Databinding.View
         /// <summary>
         /// PropertyBinder Child Item
         /// </summary>
+#if !UNITY_WSA
         [Serializable]
+#endif
         public class BindingInfo
         {
             /// <summary>
@@ -377,8 +384,17 @@ namespace Foundation.Databinding.View
                   .Select(o => o.GetValue(this))
                   .Cast<BindingInfo>()
                   .ToArray();
-#else
+#elif UNITY_WSA
             if(_infoCache == null)
+                _infoCache = GetType().GetRuntimeFields()
+                    .Where(o => o.FieldType == typeof(BindingInfo))
+                    .Select(o => o.GetValue(this))
+                    .Cast<BindingInfo>()
+                    .ToArray();
+
+            return _infoCache;
+#else
+            if (_infoCache == null)
                 _infoCache = GetType().GetFields()
                     .Where(o => o.FieldType == typeof(BindingInfo))
                     .Select(o => o.GetValue(this))
