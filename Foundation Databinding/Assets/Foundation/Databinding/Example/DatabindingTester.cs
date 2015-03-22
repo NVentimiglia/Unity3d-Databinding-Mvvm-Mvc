@@ -59,6 +59,7 @@ public class DatabindingTester : ObservableBehaviour
     {
         Output.text = "Starting Tests";
 
+        yield return StartCoroutine(TestEvent());
         yield return StartCoroutine(Update1());
         yield return StartCoroutine(Update2());
         yield return StartCoroutine(Update3());
@@ -66,6 +67,29 @@ public class DatabindingTester : ObservableBehaviour
         Log = "Ending Tests";
         Log = string.Format("Average {0} {1} {2}", average1, average2, average3);
     }
+
+    IEnumerator TestEvent()
+    {
+        Log = "Testing Event";
+        yield return new WaitForSeconds(2);
+        OnBindingUpdate += DatabindingTester_OnBindingUpdate;
+
+        Property1 = 1;
+        yield return new WaitForSeconds(2);
+        Property2 = 2;
+        yield return new WaitForSeconds(2);
+        Property3 = 3;
+        yield return new WaitForSeconds(2);
+
+        OnBindingUpdate -= DatabindingTester_OnBindingUpdate;
+
+    }
+
+    void DatabindingTester_OnBindingUpdate(ObservableMessage obj)
+    {
+        Log = string.Format("{0} : {1}", obj.Name, obj.Value);
+    }
+
 
     IEnumerator Update1()
     {
