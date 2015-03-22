@@ -6,6 +6,9 @@
 //  -------------------------------------
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using Foundation.Tasks;
 using UnityEngine;
 
@@ -121,6 +124,45 @@ namespace Foundation.Databinding.Model
         public void StopCoroutine(IEnumerator routine)
         {
             TaskManager.StopRoutine(routine);
+        }
+
+
+        /// <summary>
+        /// Mvvm light set method
+        /// </summary>
+        /// <remarks>
+        /// https://github.com/NVentimiglia/Unity3d-Databinding-Mvvm-Mvc/issues/3
+        /// https://github.com/negue
+        /// </remarks>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="valueHolder"></param>
+        /// <param name="value"></param>
+        /// <param name="propName"></param>
+        /// <returns></returns>
+        protected bool Set<T>(ref T valueHolder, T value, string propName = null)
+        {
+            var same = EqualityComparer<T>.Default.Equals(valueHolder, value);
+
+            if (!same)
+            {
+                // get call stack
+                var stackTrace = new StackTrace();
+                // get method calls (frames)
+                var stackFrames = stackTrace.GetFrames().ToList();
+
+                if (propName == null && stackFrames.Count > 1)
+                {
+                    propName = stackFrames[1].GetMethod().Name.Replace("set_", "");
+                }
+
+                valueHolder = value;
+
+                NotifyProperty(propName, value);
+
+                return true;
+            }
+
+            return false;
         }
     }
 }
