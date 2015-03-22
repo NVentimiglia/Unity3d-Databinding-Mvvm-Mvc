@@ -5,6 +5,9 @@
 //  Published		: 2015
 //  -------------------------------------
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using UnityEngine;
 
 namespace Foundation.Databinding.Model
@@ -14,7 +17,18 @@ namespace Foundation.Databinding.Model
     /// </summary>
     public abstract class ObservableBehaviour : MonoBehaviour, IObservableModel
     {
-        public event Action<ObservableMessage> OnBindingUpdate;
+        private Action<ObservableMessage> _onBindingEvent = delegate { };
+        public event Action<ObservableMessage> OnBindingUpdate
+        {
+            add
+            {
+                _onBindingEvent = (Action<ObservableMessage>)Delegate.Combine(_onBindingEvent, value);
+            }
+            remove
+            {
+                _onBindingEvent = (Action<ObservableMessage>)Delegate.Remove(_onBindingEvent, value);
+            }
+        }
 
         private ModelBinder _binder;
 
@@ -85,11 +99,11 @@ namespace Foundation.Databinding.Model
 
             Binder.RaiseBindingUpdate(memberName, paramater);
 
-            if (OnBindingUpdate != null)
+            if (_onBindingEvent != null)
             {
                 _bindingMessage.Name = memberName;
                 _bindingMessage.Value = paramater;
-                OnBindingUpdate(_bindingMessage);
+                _onBindingEvent(_bindingMessage);
             }
         }
 
@@ -125,6 +139,44 @@ namespace Foundation.Databinding.Model
         protected virtual void OnApplicationQuit()
         {
             IsApplicationQuit = true;
+        }
+
+        /// <summary>
+        /// Mvvm light set method
+        /// </summary>
+        /// <remarks>
+        /// https://github.com/NVentimiglia/Unity3d-Databinding-Mvvm-Mvc/issues/3
+        /// https://github.com/negue
+        /// </remarks>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="valueHolder"></param>
+        /// <param name="value"></param>
+        /// <param name="propName"></param>
+        /// <returns></returns>
+        protected bool Set<T>(ref T valueHolder, T value, string propName = null)
+        {
+            var same = EqualityComparer<T>.Default.Equals(valueHolder, value);
+
+            if (!same)
+            {
+                // get call stack
+                var stackTrace = new StackTrace();
+                // get method calls (frames)
+                var stackFrames = stackTrace.GetFrames().ToList();  
+
+                if (propName == null && stackFrames.Count > 1)
+                {
+                    propName = stackFrames[1].GetMethod().Name.Replace("set_", "");
+                }
+
+                valueHolder = value;
+
+                NotifyProperty(propName, value);
+
+                return true;
+            }
+
+            return false;
         }
     }
 }

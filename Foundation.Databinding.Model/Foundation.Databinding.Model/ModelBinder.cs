@@ -40,9 +40,9 @@ namespace Foundation.Databinding.Model
         
         void _bindableInstance_OnBindingUpdate(ObservableMessage obj)
         {
-            if (OnBindingUpdate != null)
+            if (_onBindingEvent != null)
             {
-                OnBindingUpdate(obj);
+                _onBindingEvent(obj);
             }
         }
 
@@ -57,21 +57,28 @@ namespace Foundation.Databinding.Model
         }
 
         #region interface
-        public event Action<ObservableMessage> OnBindingUpdate;
+        private Action<ObservableMessage> _onBindingEvent = delegate { };
+        public event Action<ObservableMessage> OnBindingUpdate
+        {
+            add
+            {
+                _onBindingEvent = (Action<ObservableMessage>)Delegate.Combine(_onBindingEvent, value);
+            }
+            remove
+            {
+                _onBindingEvent = (Action<ObservableMessage>)Delegate.Remove(_onBindingEvent, value);
+            }
+        }
 
         public void RaiseBindingUpdate(string memberName, object paramater)
         {
-            if (OnBindingUpdate != null)
+            if (_onBindingEvent != null)
             {
-                TaskManager.RunOnMainThread(() =>
-                {
-                    _bindingMessage.Name = memberName;
-                    _bindingMessage.Sender = this;
-                    _bindingMessage.Value = paramater;
+                _bindingMessage.Name = memberName;
+                _bindingMessage.Sender = this;
+                _bindingMessage.Value = paramater;
 
-                    OnBindingUpdate(_bindingMessage);
-
-                });
+                _onBindingEvent(_bindingMessage);
             }
         }
 
@@ -183,6 +190,7 @@ namespace Foundation.Databinding.Model
             _bindingMessage = null;
         }
         #endregion
+
 
 
     }

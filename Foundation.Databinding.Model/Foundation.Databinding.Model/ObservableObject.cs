@@ -17,7 +17,18 @@ namespace Foundation.Databinding.Model
     /// </summary>
     public abstract class ObservableObject : IObservableModel
     {
-        public event Action<ObservableMessage> OnBindingUpdate;
+        private Action<ObservableMessage> _onBindingEvent = delegate { };
+        public event Action<ObservableMessage> OnBindingUpdate
+        {
+            add
+            {
+                _onBindingEvent = (Action<ObservableMessage>)Delegate.Combine(_onBindingEvent, value);
+            }
+            remove
+            {
+                _onBindingEvent = (Action<ObservableMessage>)Delegate.Remove(_onBindingEvent, value);
+            }
+        }
 
         private ModelBinder _binder;
 
@@ -31,11 +42,11 @@ namespace Foundation.Databinding.Model
 
         public void RaiseBindingUpdate(string memberName, object paramater)
         {
-            if (OnBindingUpdate != null)
+            if (_onBindingEvent != null)
             {
                 _bindingMessage.Name = memberName;
                 _bindingMessage.Value = paramater;
-                OnBindingUpdate(_bindingMessage);
+                _onBindingEvent(_bindingMessage);
             }
 
             _binder.RaiseBindingUpdate(memberName, paramater);

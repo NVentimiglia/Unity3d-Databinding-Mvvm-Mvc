@@ -39,26 +39,102 @@ namespace Foundation.Databinding.Model
         /// <summary>
         /// For data binding
         /// </summary>
-        public event Action<object> OnObjectAdd;
+        private Action<object> _onObjectAdd = delegate { };
+        public event Action<object> OnObjectAdd
+        {
+            add
+            {
+                _onObjectAdd = (Action<object>)Delegate.Combine(_onObjectAdd, value);
+            }
+            remove
+            {
+                _onObjectAdd = (Action<object>)Delegate.Remove(_onObjectAdd, value);
+            }
+        }
+        /// <summary>
+        /// For data binding
+        /// </summary>
+        private Action<int, object> _onObjectInsert = delegate { };
+        public event Action<int, object> OnObjectInsert
+        {
+            add
+            {
+                _onObjectInsert = (Action<int, object>)Delegate.Combine(_onObjectInsert, value);
+            }
+            remove
+            {
+                _onObjectInsert = (Action<int, object>)Delegate.Remove(_onObjectInsert, value);
+            }
+        }
 
         /// <summary>
         /// For data binding
         /// </summary>
-        public event Action<int, object> OnObjectInsert;
+        private Action<object> _onObjectRemove = delegate { };
+        public event Action<object> OnObjectRemove
+        {
+            add
+            {
+                _onObjectRemove = (Action<object>)Delegate.Combine(_onObjectRemove, value);
+            }
+            remove
+            {
+                _onObjectRemove = (Action<object>)Delegate.Remove(_onObjectRemove, value);
+            }
+        }
+        
+        private Action<T> _onAdd = delegate { };
+        public event Action<T> OnAdd
+        {
+            add
+            {
+                _onAdd = (Action<T>)Delegate.Combine(_onAdd, value);
+            }
+            remove
+            {
+                _onAdd = (Action<T>)Delegate.Remove(_onAdd, value);
+            }
+        }
+        
+        private Action<int,T> _onInsert = delegate { };
+        public event Action<int, T> OnInsert
+        {
+            add
+            {
+                _onInsert = (Action<int, T>)Delegate.Combine(_onInsert, value);
+            }
+            remove
+            {
+                _onInsert = (Action<int, T>)Delegate.Remove(_onInsert, value);
+            }
+        }
 
-        /// <summary>
-        /// For data binding
-        /// </summary>
-        public event Action<object> OnObjectRemove;
-
-        public event Action<T> OnAdd;
-
-        public event Action<int, T> OnInsert;
-
-
-        public event Action<T> OnRemove;
-
-        public event Action OnClear;
+        
+        private Action<T> _onRemove = delegate { };
+        public event Action<T> OnRemove
+        {
+            add
+            {
+                _onRemove = (Action<T>)Delegate.Combine(_onRemove, value);
+            }
+            remove
+            {
+                _onRemove = (Action<T>)Delegate.Remove(_onRemove, value);
+            }
+        }
+        
+        private Action _onClear = delegate { };
+        public event Action OnClear
+        {
+            add
+            {
+                _onClear = (Action)Delegate.Combine(_onClear, value);
+            }
+            remove
+            {
+                _onClear = (Action)Delegate.Remove(_onClear, value);
+            }
+        }
         #endregion
 
 
@@ -111,11 +187,11 @@ namespace Foundation.Databinding.Model
         {
             _list.Add(o);
 
-            if (OnAdd != null)
-                OnAdd(o);
+            if (_onAdd != null)
+                _onAdd(o);
 
-            if (OnObjectAdd != null)
-                OnObjectAdd(o);
+            if (_onObjectAdd != null)
+                _onObjectAdd(o);
         }
 
         /// <summary>
@@ -138,11 +214,11 @@ namespace Foundation.Databinding.Model
         {
             if (_list.Remove(o))
             {
-                if (OnRemove != null)
-                    OnRemove(o);
+                if (_onRemove != null)
+                    _onRemove(o);
 
-                if (OnObjectRemove != null)
-                    OnObjectRemove(o);
+                if (_onObjectRemove != null)
+                    _onObjectRemove(o);
             }
         }
 
@@ -166,11 +242,11 @@ namespace Foundation.Databinding.Model
         {
             _list.Insert(index, o);
 
-            if (OnInsert != null)
-                OnInsert(index, o);
+            if (_onInsert != null)
+                _onInsert(index, o);
 
-            if (OnInsert != null)
-                OnObjectInsert(index, o);
+            if (_onInsert != null)
+                _onObjectInsert(index, o);
 
         }
 
@@ -181,8 +257,8 @@ namespace Foundation.Databinding.Model
         {
             _list.Clear();
 
-            if (OnClear != null)
-                OnClear();
+            if (_onClear != null)
+                _onClear();
 
         }
 
@@ -192,7 +268,6 @@ namespace Foundation.Databinding.Model
         /// </summary>
         public void Release()
         {
-            if (OnClear != null)
                 Clear();
         }
 
@@ -213,7 +288,7 @@ namespace Foundation.Databinding.Model
             return _list.GetEnumerator();
         }
 
-        global::System.Collections.IEnumerator global::System.Collections.IEnumerable.GetEnumerator()
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return _list.GetEnumerator();
         }

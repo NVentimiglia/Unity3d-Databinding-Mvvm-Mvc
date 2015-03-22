@@ -58,7 +58,7 @@ namespace Foundation.Databinding.Model
     /// <summary>
     /// Like INotifyPropertyChanged but with a more detailed event.
     /// </summary>
-    public interface IObservableModel 
+    public interface IObservableModel
     {
         /// <summary>
         /// Raised when a property is changed.
