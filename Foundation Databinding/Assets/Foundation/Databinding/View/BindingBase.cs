@@ -9,6 +9,9 @@ using System.Linq;
 using Foundation.Databinding.Model;
 using Foundation.Tasks;
 using UnityEngine;
+#if UNITY_WSA && !UNITY_EDITOR
+using System.Reflection;
+#endif
 
 namespace Foundation.Databinding.View
 {
@@ -205,19 +208,27 @@ namespace Foundation.Databinding.View
         public void FindContext()
         {
             Context = BindingProxy == null
-                ? GetComponentInParent<BindingContext>()
-                : BindingProxy.GetComponentInParent<BindingContext>();
+                ? BindingExtensions.FindInParent<BindingContext>(gameObject)
+                : BindingExtensions.FindInParent<BindingContext>(BindingProxy);
 
             if (BindingProxy != null && Context == null)
                 Debug.LogError("Invalid BindingProxy. Please bind to a BindingContext or its child.");
 
         }
 
+      
+
         [ContextMenu("Debug Info")]
         public virtual void DebugInfo()
         {
             Debug.Log("Context : " + Context);
             Debug.Log("Model   : " + (Model == null ? "null" : Model.ToString()));
+
+            Debug.Log("Bindings");
+            foreach (var info in GetBindingInfos())
+            {
+                Debug.Log("Member : " + info.MemberName + ", " + info.BindingName);
+            }
         }
         #endregion
 
@@ -377,8 +388,17 @@ namespace Foundation.Databinding.View
                   .Select(o => o.GetValue(this))
                   .Cast<BindingInfo>()
                   .ToArray();
-#else
+#elif UNITY_WSA
             if(_infoCache == null)
+                _infoCache = GetType().GetRuntimeFields()
+                    .Where(o => o.FieldType == typeof(BindingInfo))
+                    .Select(o => o.GetValue(this))
+                    .Cast<BindingInfo>()
+                    .ToArray();
+
+            return _infoCache;
+#else
+            if (_infoCache == null)
                 _infoCache = GetType().GetFields()
                     .Where(o => o.FieldType == typeof(BindingInfo))
                     .Select(o => o.GetValue(this))

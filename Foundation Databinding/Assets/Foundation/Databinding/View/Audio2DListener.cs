@@ -16,7 +16,6 @@ namespace Foundation.Databinding.View
     /// <remarks>
     /// Attach onto all AudioListeners
     /// </remarks>
-    [Serializable]
     [AddComponentMenu("Foundation/Databinding/Audio2dListener")]
     [RequireComponent(typeof(AudioListener))]
     public class Audio2DListener : MonoBehaviour
@@ -154,6 +153,6 @@ namespace Foundation.Databinding.View
         }
         #endregion
 
-        
+
     }
 }

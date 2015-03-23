@@ -9,6 +9,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using UnityEngine;
+#if UNITY_WSA
+using System.Runtime.CompilerServices;
+#endif
 
 namespace Foundation.Databinding.Model
 {
@@ -141,6 +144,7 @@ namespace Foundation.Databinding.Model
             IsApplicationQuit = true;
         }
 
+#if !UNITY_WSA
         /// <summary>
         /// Mvvm light set method
         /// </summary>
@@ -155,18 +159,21 @@ namespace Foundation.Databinding.Model
         /// <returns></returns>
         protected bool Set<T>(ref T valueHolder, T value, string propName = null)
         {
-            var same = EqualityComparer<T>.Default.Equals(valueHolder, value);
+            var same =  EqualityComparer<T>.Default.Equals(valueHolder, value);
 
             if (!same)
             {
-                // get call stack
-                var stackTrace = new StackTrace();
-                // get method calls (frames)
-                var stackFrames = stackTrace.GetFrames().ToList();  
-
-                if (propName == null && stackFrames.Count > 1)
+                if (string.IsNullOrEmpty(propName))
                 {
-                    propName = stackFrames[1].GetMethod().Name.Replace("set_", "");
+                    // get call stack
+                    var stackTrace = new StackTrace();
+                    // get method calls (frames)
+                    var stackFrames = stackTrace.GetFrames().ToList();
+
+                    if (propName == null && stackFrames.Count > 1)
+                    {
+                        propName = stackFrames[1].GetMethod().Name.Replace("set_", "");
+                    }
                 }
 
                 valueHolder = value;
@@ -178,5 +185,32 @@ namespace Foundation.Databinding.Model
 
             return false;
         }
+#else
+        /// <summary>
+        /// Mvvm light set method
+        /// </summary>
+        /// <remarks>
+        /// https://github.com/NVentimiglia/Unity3d-Databinding-Mvvm-Mvc/issues/3
+        /// https://github.com/negue
+        /// </remarks>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="valueHolder"></param>
+        /// <param name="value"></param>
+        /// <param name="propName"></param>
+        /// <returns></returns>
+        protected bool Set<T>(ref T valueHolder, T value, [CallerMemberName] string propName = null)
+        {
+            var same = EqualityComparer<T>.Default.Equals(valueHolder, value);
+
+            if (!same)
+            {
+                NotifyProperty(propName, value);
+                valueHolder = value;
+                return true;
+            }
+
+            return false;
+        }
+#endif
     }
 }

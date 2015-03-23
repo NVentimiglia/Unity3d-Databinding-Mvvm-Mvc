@@ -56,6 +56,7 @@ namespace Foundation.Databinding.Example
                 _isVisible = value;
                 //notify bound listeners that this has changed
                 NotifyProperty("IsVisible", value);
+                Debug.Log("ExampleMainMenu.IsVisible " + value);
             }
         }
 
@@ -97,6 +98,13 @@ namespace Foundation.Databinding.Example
 
             //switch visibility on
             IsVisible = true;
+        }
+
+
+        protected override void Awake()
+        {
+            base.Awake();
+            Debug.Log("ExampleMainMenu.Awake");
         }
     }
 }

@@ -10,6 +10,11 @@ using System.Linq;
 using System.Reflection;
 using Foundation.Databinding.Model;
 using UnityEngine;
+#if UNITY_WSA && !UNITY_EDITOR
+using Windows.Foundation;
+using Windows.ApplicationModel;
+using Windows.Storage;
+#endif
 
 namespace Foundation.Databinding.View
 {
@@ -27,6 +32,79 @@ namespace Foundation.Databinding.View
     {
         #region Editor stuff
 
+
+
+#if UNITY_WSA && !UNITY_EDITOR
+
+        private static Assembly[] _assemblies;
+        public static Assembly[] Assemblies
+        {
+            get
+            {
+                RefreshAssembly();
+                return _assemblies;
+            }
+        }
+
+        private static TypeInfo[] _modelTypes;
+        public static TypeInfo[] ModelTypes
+        {
+            get
+            {
+                RefreshAssembly();
+                return _modelTypes;
+            }
+        }
+
+        private static string[] _namespaces;
+        public static string[] NameSpaces
+        {
+            get
+            {
+                RefreshAssembly();
+                return _namespaces;
+            }
+        }
+        static async void RefreshAssembly()
+        {
+            if (_assemblies == null)
+            {
+                _assemblies = await GetLoadedAssemblies();
+                _modelTypes = _assemblies.SelectMany(o => o.DefinedTypes).Where(o => o.IsPublic).OrderBy(o => o.Name).ToArray();
+                _namespaces = _modelTypes.Select(o => o.Namespace).OrderBy(o => o).Distinct().ToArray();
+            }
+        }
+
+        protected static async System.Threading.Tasks.Task<Assembly[]> GetLoadedAssemblies()
+        {
+            // Find assemblies.
+            StorageFolder folder = Package.Current.InstalledLocation;
+
+            var loadedAssemblies = new List<Assembly>();
+
+            var folderFilesAsync = await folder.GetFilesAsync().AsTask();
+
+            foreach (var file in folderFilesAsync)
+            {
+                if (file.FileType == ".dll" || file.FileType == ".exe")
+                {
+                    try
+                    {
+                        var filename = file.Name.Substring(0, file.Name.Length - file.FileType.Length);
+                        AssemblyName name = new AssemblyName { Name = filename };
+                        Assembly asm = Assembly.Load(name);
+                        loadedAssemblies.Add(asm);
+                    }
+                    catch (BadImageFormatException)
+                    {
+                        // Thrown reflecting on C++ executable files for which the C++ compiler stripped the relocation addresses (such as Unity dlls): http://msdn.microsoft.com/en-us/library/x4cw969y(v=vs.110).aspx
+                    }
+                }
+            }
+
+            return loadedAssemblies.OrderBy(o => o.FullName).ToArray();
+        }
+#else
         private static Assembly[] _assemblies;
         public static Assembly[] Assemblies
         {
@@ -56,21 +134,16 @@ namespace Foundation.Databinding.View
                 return _namespaces;
             }
         }
-
         static void RefreshAssembly()
         {
             if (_assemblies == null)
             {
-
-                var a = AppDomain.CurrentDomain.GetAssemblies().Where(o => !o.Location.Contains("Editor"));
-                var b = a.OrderBy(o => o.FullName).ToArray();
-
-                // Ignore UnityEngine types
-                _assemblies = b;
+                _assemblies = AppDomain.CurrentDomain.GetAssemblies().Where(o => !o.Location.Contains("Editor")).OrderBy(o => o.FullName).ToArray();
                 _modelTypes = _assemblies.SelectMany(o => o.GetTypes()).Where(o => o.IsPublic).OrderBy(o => o.Name).ToArray();
                 _namespaces = _modelTypes.Select(o => o.Namespace).OrderBy(o => o).Distinct().ToArray();
             }
         }
+#endif
 
         /// <summary>
         /// Ways to discover a view model
@@ -124,7 +197,11 @@ namespace Foundation.Databinding.View
         /// Gets Data ValueType from backing values
         /// </summary>
         /// <returns></returns>
+#if UNITY_WSA && !UNITY_EDITOR
+        public TypeInfo GetDataType()
+#else
         public Type GetDataType()
+#endif
         {
             return ModelTypes.FirstOrDefault(o => o.FullName == ModelFullName);
         }
@@ -139,11 +216,19 @@ namespace Foundation.Databinding.View
         }
 
         #endregion
+#if UNITY_WSA && !UNITY_EDITOR
+        private TypeInfo _dataType;
+        /// <summary>
+        /// The current model type. Used by editors.
+        /// </summary>
+        public TypeInfo DataType
+#else
         private Type _dataType;
         /// <summary>
         /// The current model type. Used by editors.
         /// </summary>
         public Type DataType
+#endif
         {
             get { return _dataType; }
             set
@@ -213,7 +298,7 @@ namespace Foundation.Databinding.View
         protected void OnEnable()
         {
             FindModel();
-          //  SubscribeBinder(this);
+            //  SubscribeBinder(this);
         }
 
         protected void OnDisable()
@@ -240,7 +325,7 @@ namespace Foundation.Databinding.View
                     break;
 
                 case BindingContextMode.PropBinding:
-                    Context = transform.parent.GetComponentInParent<BindingContext>();
+                    Context = BindingExtensions.FindInParent<BindingContext>(transform.parent.gameObject);
                     if (!Application.isPlaying)
                         SetPropertyTypeData();
                     break;
@@ -250,6 +335,8 @@ namespace Foundation.Databinding.View
                     break;
             }
         }
+
+
 
         void OnRemoveInstance()
         {
@@ -290,7 +377,11 @@ namespace Foundation.Databinding.View
 
 
             // set the data type if not null (Used By Editor Inspector).
+#if UNITY_WSA && !UNITY_EDITOR
+            DataType = DataInstance.GetType().GetTypeInfo();
+#else
             DataType = DataInstance.GetType();
+#endif
 
             if (!Application.isPlaying)
                 return;
@@ -516,20 +607,34 @@ namespace Foundation.Databinding.View
             if (Context.DataType == null)
                 return;
 
+
+#if UNITY_WSA&& !UNITY_EDITOR
+            // Use reflection to set local type (Value will be null, no instance
+            var member = Context.DataType.DeclaredMembers.FirstOrDefault(o=> o.Name == PropertyName);
+#else
             // Use reflection to set local type (Value will be null, no instance
             var member = Context.DataType.GetMember(PropertyName).FirstOrDefault();
+#endif
 
             if (member == null)
                 return;
 
             if (member is FieldInfo)
             {
+#if UNITY_WSA&& !UNITY_EDITOR
+                DataType = ((FieldInfo)member).FieldType.GetTypeInfo();
+#else
                 DataType = ((FieldInfo)member).FieldType;
+#endif
             }
 
             if (member is PropertyInfo)
             {
+#if UNITY_WSA&& !UNITY_EDITOR
+                DataType = ((PropertyInfo)member).PropertyType.GetTypeInfo();
+#else
                 DataType = ((PropertyInfo)member).PropertyType;
+#endif
             }
         }
         #endregion

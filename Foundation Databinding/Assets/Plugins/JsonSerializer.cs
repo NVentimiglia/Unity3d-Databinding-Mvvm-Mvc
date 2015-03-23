@@ -1,7 +1,9 @@
 using System;
 
+
 namespace FullSerializer
 {
+
     /// <summary>
     /// Static instance for easy serializing
     /// </summary>
@@ -39,7 +41,7 @@ namespace FullSerializer
         {
             fsData data;
             fsResult r = Internal.TrySerialize<T>(value, out data);
-
+            
             if (r.Failed)
                 throw r.AsException;
 
@@ -62,6 +64,7 @@ namespace FullSerializer
 
             fsData data;
             fsResult fsFailure1 = fsJsonParser.Parse(json, out data);
+
             if (fsFailure1.Failed)
                 throw fsFailure1.AsException;
 
