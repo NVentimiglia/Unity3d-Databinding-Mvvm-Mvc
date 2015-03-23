@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 2cc75c4c9d12d2b4491876ba2efcd244
-timeCreated: 1427050194
+guid: 4e6323a4f400ad046a5531e50ea674c1
+timeCreated: 1427135312
 licenseType: Free
 PluginImporter:
   serializedVersion: 1
@@ -53,6 +53,9 @@ PluginImporter:
         DontProcess: False
         PlaceholderPath: 
     Web:
+      enabled: 1
+      settings: {}
+    WebGL:
       enabled: 1
       settings: {}
     WebStreamed:

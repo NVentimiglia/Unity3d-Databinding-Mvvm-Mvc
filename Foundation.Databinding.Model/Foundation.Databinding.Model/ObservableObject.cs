@@ -190,7 +190,7 @@ namespace Foundation.Databinding.Model
             if (!same)
             {
                 NotifyProperty(propName, value);
-
+                valueHolder = value;
                 return true;
             }
 

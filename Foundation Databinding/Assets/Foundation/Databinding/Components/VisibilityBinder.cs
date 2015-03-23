@@ -22,22 +22,33 @@ namespace Foundation.Databinding.Components
         public GameObject[] InverseTargets;
 
         [HideInInspector]
-        public BindingInfo ValueBinding = new BindingInfo { BindingName = "Value" };
+        public BindingInfo ValueBinding = new BindingInfo
+        {
+            Filters = BindingFilter.Properties,
+            FilterTypes = new[] { typeof(bool) },
+            BindingName = "Value"
+        };
 
         protected bool IsInit;
 
-        public bool WTF;
+        public bool WaitFrame;
 
         void Awake()
         {
             Init();
         }
 
+        [ContextMenu("DoDebug")]
+        public void DoDebug()
+        {
+            Debug.Log(ValueBinding.BindingName);
+        }
+
         private void UpdateState(object arg)
         {
             var b = arg != null && (bool)arg;
 
-            if (WTF)
+            if (WaitFrame)
             {
                 StartCoroutine(UpdateAsync(b));
                 return;
@@ -81,8 +92,6 @@ namespace Foundation.Databinding.Components
             IsInit = true;
 
             ValueBinding.Action = UpdateState;
-            ValueBinding.Filters = BindingFilter.Properties;
-            ValueBinding.FilterTypes = new[] { typeof(bool) };
         }
     }
 }

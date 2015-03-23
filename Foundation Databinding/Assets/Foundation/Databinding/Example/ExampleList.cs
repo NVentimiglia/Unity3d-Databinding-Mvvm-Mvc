@@ -17,7 +17,6 @@ namespace Foundation.Databinding.Example
     /// <summary>
     /// Demonstration of a child view model
     /// </summary>
-    [Serializable]
     public class ExampleScore : ObservableObject
     {
         [SerializeField]

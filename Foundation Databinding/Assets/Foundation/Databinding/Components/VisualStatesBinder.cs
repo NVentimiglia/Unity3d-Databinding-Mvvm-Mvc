@@ -16,9 +16,8 @@ namespace Foundation.Databinding.Components
     [AddComponentMenu("Foundation/Databinding/VisualStatesBinder")]
     public class VisualStatesBinder : BindingBase
     {
-#if !UNITY_WSA && !UNITY_EDITOR
+
     [Serializable]
-#endif
         public struct StateValue
         {
             public GameObject Target;

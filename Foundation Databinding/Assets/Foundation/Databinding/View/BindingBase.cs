@@ -9,7 +9,7 @@ using System.Linq;
 using Foundation.Databinding.Model;
 using Foundation.Tasks;
 using UnityEngine;
-#if UNITY_WSA
+#if UNITY_WSA && !UNITY_EDITOR
 using System.Reflection;
 #endif
 
@@ -22,9 +22,7 @@ namespace Foundation.Databinding.View
     /// <remarks>
     /// If you want to write your own databinder, inherit from this.
     /// </remarks>
-#if !UNITY_WSA
-        [Serializable]
-#endif
+    [Serializable]
     [ExecuteInEditMode]
     public abstract class BindingBase : MonoBehaviour, IBindingElement
     {
@@ -45,9 +43,7 @@ namespace Foundation.Databinding.View
         /// <summary>
         /// PropertyBinder Child Item
         /// </summary>
-#if !UNITY_WSA
         [Serializable]
-#endif
         public class BindingInfo
         {
             /// <summary>
@@ -212,19 +208,27 @@ namespace Foundation.Databinding.View
         public void FindContext()
         {
             Context = BindingProxy == null
-                ? GetComponentInParent<BindingContext>()
-                : BindingProxy.GetComponentInParent<BindingContext>();
+                ? BindingExtensions.FindInParent<BindingContext>(gameObject)
+                : BindingExtensions.FindInParent<BindingContext>(BindingProxy);
 
             if (BindingProxy != null && Context == null)
                 Debug.LogError("Invalid BindingProxy. Please bind to a BindingContext or its child.");
 
         }
 
+      
+
         [ContextMenu("Debug Info")]
         public virtual void DebugInfo()
         {
             Debug.Log("Context : " + Context);
             Debug.Log("Model   : " + (Model == null ? "null" : Model.ToString()));
+
+            Debug.Log("Bindings");
+            foreach (var info in GetBindingInfos())
+            {
+                Debug.Log("Member : " + info.MemberName + ", " + info.BindingName);
+            }
         }
         #endregion
 

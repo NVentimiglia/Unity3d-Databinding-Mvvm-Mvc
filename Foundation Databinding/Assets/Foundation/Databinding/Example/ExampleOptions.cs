@@ -102,10 +102,7 @@ namespace Foundation.Databinding.Example
         public bool UseCensor
         {
             get { return _useCensor; }
-            set
-            {
-                Set(ref _useCensor, value);
-            }
+            set { Set(ref _useCensor, value); }
         }
 
         [SerializeField]

@@ -325,7 +325,7 @@ namespace Foundation.Databinding.View
                     break;
 
                 case BindingContextMode.PropBinding:
-                    Context = transform.parent.GetComponentInParent<BindingContext>();
+                    Context = BindingExtensions.FindInParent<BindingContext>(transform.parent.gameObject);
                     if (!Application.isPlaying)
                         SetPropertyTypeData();
                     break;
@@ -335,6 +335,8 @@ namespace Foundation.Databinding.View
                     break;
             }
         }
+
+
 
         void OnRemoveInstance()
         {
