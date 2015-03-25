@@ -85,11 +85,8 @@ namespace Foundation.Databinding.Model
         [HideInInspector]
         public object GetValue(string memberName)
         {
-#if UNITY_WSA
-            var member = _myType.GetTypeInfo().DeclaredMembers.FirstOrDefault(o => o.Name == memberName);
-#else
-            var member = _myType.GetMember(memberName).FirstOrDefault();
-#endif
+            var member = _myType.GetRuntimeMember(memberName);
+
             if (member == null)
             {
                 Debug.LogError("Member not found ! " + memberName + " " + _myType);
@@ -101,11 +98,8 @@ namespace Foundation.Databinding.Model
 
         public object GetValue(string memberName, object paramater)
         {
-#if UNITY_WSA
-            var member = _myType.GetTypeInfo().DeclaredMembers.FirstOrDefault(o => o.Name == memberName);
-#else
-            var member = _myType.GetMember(memberName).FirstOrDefault();
-#endif
+            var member = _myType.GetRuntimeMember(memberName);
+
             if (member == null)
             {
                 Debug.LogError("Member not found ! " + memberName + " " + _myType);
@@ -149,11 +143,7 @@ namespace Foundation.Databinding.Model
 
         public void Command(string memberName, object paramater)
         {
-#if UNITY_WSA
-            var member = _myType.GetTypeInfo().DeclaredMembers.FirstOrDefault(o => o.Name == memberName);
-#else
-            var member = _myType.GetMember(memberName).FirstOrDefault();
-#endif
+            var member = _myType.GetRuntimeMember(memberName);
 
             if (member == null)
             {

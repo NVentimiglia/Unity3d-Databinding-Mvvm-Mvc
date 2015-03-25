@@ -5,9 +5,6 @@
 //  Published		: 2015
 //  -------------------------------------
 using System;
-#if UNITY_WSA
-using System.Reflection;
-#endif
 
 namespace Foundation.Databinding.Model
 {
@@ -37,18 +34,10 @@ namespace Foundation.Databinding.Model
             if (paramater == null)
                 return null;
 
-#if UNITY_WSA
-            if (desiredType == null || desiredType.GetTypeInfo().IsAssignableFrom(paramater.GetType().GetTypeInfo()))
-#else
-            if (desiredType == null || desiredType.IsInstanceOfType(paramater))
-#endif
+            if (desiredType == null || desiredType.IsAssignable(paramater))
                 return paramater;
 
-#if UNITY_WSA
-            if (desiredType.GetTypeInfo().IsEnum)
-#else
-            if (desiredType.IsEnum)
-#endif
+            if (desiredType.IsEnum())
             {
                 return Enum.Parse(desiredType, paramater.ToString());
             }

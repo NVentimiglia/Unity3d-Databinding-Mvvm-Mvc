@@ -89,14 +89,19 @@ namespace FullSerializer
             if (string.IsNullOrEmpty(json))
                 return null;
 
-            // step 1: parse the JSON data
-            fsData data = fsJsonParser.Parse(json);
+            fsData data;
+            fsResult fsFailure1 = fsJsonParser.Parse(json, out data);
+            if (fsFailure1.Failed)
+                throw fsFailure1.AsException;
 
-            // step 2: deserialize the data
-            object deserialized = null;
-            Internal.TryDeserialize(data, type, ref deserialized).AssertSuccessWithoutWarnings();
+            var instance = Activator.CreateInstance(type);
 
-            return deserialized;
+            fsResult fsFailure2 = Internal.TryDeserialize(data, type, ref instance);
+
+            if (fsFailure2.Failed)
+                throw fsFailure2.AsException;
+
+            return instance;
         }
     }
 }
