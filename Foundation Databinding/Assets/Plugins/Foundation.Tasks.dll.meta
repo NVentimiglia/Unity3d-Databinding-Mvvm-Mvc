@@ -25,21 +25,27 @@ PluginImporter:
         DefaultValueInitialized: true
         OS: AnyOS
     Linux:
-      enabled: 0
+      enabled: 1
       settings:
         CPU: x86
     Linux64:
-      enabled: 0
+      enabled: 1
       settings:
         CPU: x86_64
+    LinuxUniversal:
+      enabled: 1
+      settings: {}
     OSXIntel:
-      enabled: 0
+      enabled: 1
       settings:
         CPU: AnyCPU
     OSXIntel64:
-      enabled: 0
+      enabled: 1
       settings:
         CPU: AnyCPU
+    OSXUniversal:
+      enabled: 1
+      settings: {}
     WP8:
       enabled: 0
       settings:
@@ -53,11 +59,11 @@ PluginImporter:
       enabled: 1
       settings: {}
     Win:
-      enabled: 0
+      enabled: 1
       settings:
         CPU: AnyCPU
     Win64:
-      enabled: 0
+      enabled: 1
       settings:
         CPU: AnyCPU
     WindowsStoreApps:
