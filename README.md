@@ -24,8 +24,8 @@ Desktop, Webplayer, Android, iOS, Windows Store
 
 ##Dependencies
 
-- ~[FullSerializer](https://github.com/jacobdufault/fullserializer) Json Library~
-- ~[Foundation.Tasks](https://github.com/NVentimiglia/Unity3d-Async-Task) Async Library~
+- ~~[FullSerializer](https://github.com/jacobdufault/fullserializer) Json Library~~
+- ~~[Foundation.Tasks](https://github.com/NVentimiglia/Unity3d-Async-Task) Async Library~~
 - [Foundation.Localization](https://github.com/NVentimiglia/Unity3d-Localization) Translation Library
 - Localization may be omitted by using the NoLocalization compilation directive
 - [Foundation.Injector](https://github.com/NVentimiglia/Unity3d-Service-Injector) Is mentioned in the comments. It is not needed but I personally use it so that I dont need to reference my components in the editor.
