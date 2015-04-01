@@ -7,7 +7,7 @@ Databinding is a mechanism to 'connect' your UI widgets (buttons, input, text, l
 
 - Supports inheritance, interfaces, structs and using DLLs
 
-- Bind to monobehaviours or plain CLR objects)
+- Bind to monobehaviours or plain CLR objects
 
 - Foundation.Databinding.Model is a dll, so you can place your game model in a class library (not necessary)
 
