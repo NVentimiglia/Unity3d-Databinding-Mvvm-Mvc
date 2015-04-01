@@ -7,13 +7,14 @@ Databinding is a mechanism to 'connect' your UI widgets (buttons, input, text, l
 
 - Supports inheritance, interfaces, structs and using DLLs
 
-- Bind to monobehaviours and plain CLR objects (wont have change notification)
+- Bind to monobehaviours or plain CLR objects)
 
 - Foundation.Databinding.Model is a dll, so you can place your game model in a class library (not necessary)
 
 - Bind to methods, fields, properties or coroutines
 
 - Uses IObservableModel interface instead of IPropertyNotifyChange. IObservableModel includes the changed value along side the changed property name as to prevent an additional reflection call.
+
 - Supports INotifyPropertyChange for quickly converting old projects to unity.
 
 ## Platforms
