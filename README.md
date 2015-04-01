@@ -1,4 +1,4 @@
-# Foundation Databinding (v4.2) 3/24/2015
+# Foundation Databinding (v4.3) 4/01/2015
 
 Nicholas Ventimiglia | AvariceOnline.com
 
