@@ -13,10 +13,6 @@ Databinding is a mechanism to 'connect' your UI widgets (buttons, input, text, l
 
 - Bind to methods, fields, properties or coroutines
 
-- Supports IObservableModel. IObservableModel includes the changed value along side the changed property name (for preformance).
-
-- Supports INotifyPropertyChange for quickly converting old projects to unity.
-
 ## Platforms
 Desktop, Webplayer, Android, iOS, Windows Store
 
