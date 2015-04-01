@@ -6,9 +6,9 @@
 //  -------------------------------------
 using System;
 using System.Collections;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
-using Foundation.Tasks;
 using UnityEngine;
 
 namespace Foundation.Databinding.Model
@@ -24,6 +24,7 @@ namespace Foundation.Databinding.Model
         object _instance;
         MonoBehaviour _insanceBehaviour;
         IObservableModel _bindableInstance;
+        INotifyPropertyChanged _notifyInstance;
 
         public ModelBinder(object instance)
         {
@@ -32,10 +33,23 @@ namespace Foundation.Databinding.Model
 
             _insanceBehaviour = instance as MonoBehaviour;
             _bindableInstance = instance as IObservableModel;
+            _notifyInstance = instance as INotifyPropertyChanged;
 
             if (_bindableInstance != null)
                 _bindableInstance.OnBindingUpdate += _bindableInstance_OnBindingUpdate;
+            else if (_notifyInstance != null)
+                _notifyInstance.PropertyChanged += _notifyInstance_PropertyChanged;
 
+        }
+
+        void _notifyInstance_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (_onBindingEvent != null)
+            {
+                _bindingMessage.Name = e.PropertyName;
+                _bindingMessage.Value = GetValue(e.PropertyName);
+                _onBindingEvent(_bindingMessage);
+            }
         }
 
         void _bindableInstance_OnBindingUpdate(ObservableMessage obj)
@@ -163,7 +177,7 @@ namespace Foundation.Databinding.Model
                     {
                         if (!_insanceBehaviour.gameObject.activeSelf)
                         {
-                            Debug.LogError("Behaviour is inactive ! " + _insanceBehaviour);
+                            Debug.LogError("Behavior is inactive ! " + _insanceBehaviour);
                         }
 
                         // via built in
@@ -177,7 +191,7 @@ namespace Foundation.Databinding.Model
                     {
                         // via helper
                         var routine = method.Invoke(_instance, converted == null ? null : new[] { converted });
-                        TaskManager.StartRoutine((IEnumerator)routine);
+                        ObservableHandler.Instance.StartCoroutine((IEnumerator)routine);
                     }
                     return;
                 }
@@ -195,12 +209,16 @@ namespace Foundation.Databinding.Model
             {
                 _bindableInstance.OnBindingUpdate -= _bindableInstance_OnBindingUpdate;
             }
-
+            if (_notifyInstance != null)
+            {
+                _notifyInstance.PropertyChanged -= _notifyInstance_PropertyChanged;
+            }
             _myType = null;
             _instance = null;
             _insanceBehaviour = null;
             _bindableInstance = null;
             _bindingMessage = null;
+            _notifyInstance = null;
         }
         #endregion
 

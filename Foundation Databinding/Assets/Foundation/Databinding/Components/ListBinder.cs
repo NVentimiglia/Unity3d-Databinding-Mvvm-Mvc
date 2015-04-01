@@ -52,9 +52,12 @@ namespace Foundation.Databinding.Components
         protected RectTransform RectTransform;
         protected RectTransform RectTransform2;
         
-        public bool SetAsFirstSibling = false;
-        public
 
+        /// <summary>
+        /// Bottom Up as opposed to Top Down
+        /// </summary>
+        public bool SetAsFirstSibling = false;
+        
         void Awake()
         {
             RectTransform = GetComponent<RectTransform>();

@@ -7,12 +7,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using Foundation.Tasks;
 using UnityEngine;
 #if UNITY_WSA
 using System.Runtime.CompilerServices;
+#else
+using System.Diagnostics;
 #endif
 
 namespace Foundation.Databinding.Model
@@ -117,7 +117,7 @@ namespace Foundation.Databinding.Model
         /// <param name="routine"></param>
         public Coroutine StartCoroutine(IEnumerator routine)
         {
-            return TaskManager.StartRoutine(routine);
+            return ObservableHandler.Instance.StartCoroutine(routine);
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace Foundation.Databinding.Model
         /// <param name="routine"></param>
         public void StopCoroutine(IEnumerator routine)
         {
-            TaskManager.StopRoutine(routine);
+            ObservableHandler.Instance.StopCoroutine(routine);
         }
 
 #if !UNITY_WSA
