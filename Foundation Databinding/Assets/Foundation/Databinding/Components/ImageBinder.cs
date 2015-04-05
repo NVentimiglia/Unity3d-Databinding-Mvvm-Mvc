@@ -44,7 +44,7 @@ namespace Foundation.Databinding.Components
 
             SpriteBinding.Action = UpdateLabel;
             SpriteBinding.Filters = BindingFilter.Properties;
-            SpriteBinding.FilterTypes = new[] { typeof(Texture2D) };
+            SpriteBinding.FilterTypes = new[] { typeof(Texture2D), typeof(Sprite) };
 
 
             ColorBinding.Action = UpdateColor;
@@ -58,14 +58,19 @@ namespace Foundation.Databinding.Components
             if (Target)
             {
                 var texture = (Texture2D)arg;
+                var sprite = (Sprite) arg;
 
-                if (texture == null)
+                if(sprite != null)
                 {
-                    Target.sprite = original;
+                    Target.sprite = sprite;
+                }
+                else if (texture != null)
+                {
+                    Target.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);;
                 }
                 else
                 {
-                    Target.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
+                    Target.sprite = original;
                 }
             }
         }
