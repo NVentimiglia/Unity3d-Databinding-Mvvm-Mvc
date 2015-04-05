@@ -6,7 +6,7 @@ Databinding is a mechanism to 'connect' your UI widgets (buttons, input, text, l
 
 
 - Supports most major uGUI elements (Input, text, images, ect)
-- 
+
 - Supports inheritance, interfaces, structs and using DLLs
 
 - Bind to monobehaviours, CLR objects, INotifyPropertyChange or IObservableModel.
