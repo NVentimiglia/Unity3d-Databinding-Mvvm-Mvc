@@ -18,59 +18,75 @@ namespace Foundation.Databinding.Components
     public class ButtonBinder : BindingBase
     {
 
+        //1) Local Dependencies (Our button and the param extension)
         protected Button Button;
         protected ButtonParamater Paramater;
 
-        [HideInInspector]
-        public BindingInfo EnabledBinding = new BindingInfo { BindingName = "Enabled" };
+        //2) Define a BindingInfo. These are found via reflection so
+        //	 you can add as many as you like.Define t
 
         [HideInInspector]
-        public BindingInfo OnClickBinding = new BindingInfo { BindingName = "OnClick" };
+        public BindingInfo EnabledBinding = new BindingInfo
+        {
+            // Inspecter Name
+            BindingName = "Enabled",
+            // Properties are two way
+            Filters = BindingFilter.Properties,
+            // Filters Model Properties By Type
+            FilterTypes = new[] { typeof(bool) }
+        };
+
+        [HideInInspector]
+        public BindingInfo OnClickBinding = new BindingInfo
+        {
+            // Inspecter Name
+            BindingName = "OnClick",
+            // Commands are One way from the view
+            Filters = BindingFilter.Commands
+        };
+
 
         protected bool IsInit;
-
-    //    public AudioClip ClickSound;
 
         void Awake()
         {
             Init();
         }
 
-        public void Call()
-        {
-            if(!Button.IsInteractable())
-                return;
-
-           // if (ClickSound)
-          //  {
-           //     Audio2DListener.PlayUI(ClickSound, 1);
-          //  }
-
-            SetValue(OnClickBinding.MemberName, Paramater == null? null : Paramater.GetValue());
-        }
-
-        private void UpdateState(object arg)
-        {
-            Button.interactable = (bool)arg;
-        }
-
-      
         public override void Init()
         {
             if (IsInit)
                 return;
+
             IsInit = true;
 
+            // Grab dependencies
             Paramater = GetComponent<ButtonParamater>();
             Button = GetComponent<Button>();
 
-            OnClickBinding.Filters = BindingFilter.Commands;
-            
-            EnabledBinding.Action = UpdateState;
-            EnabledBinding.Filters = BindingFilter.Properties;
-            EnabledBinding.FilterTypes = new[] { typeof(bool) };
-            
+            // Listen to button clicks
             Button.onClick.AddListener(Call);
+
+            // Handle the Model.Enabled Change
+            EnabledBinding.Action = UpdateState;
+
         }
+
+        public void Call()
+        {
+            // if button is disabled, no
+            if (!Button.IsInteractable())
+                return;
+            // SetValue is the method for most View->Model value setting.
+            // SetValue should work for all member types.
+            SetValue(OnClickBinding.MemberName, Paramater == null ? null : Paramater.GetValue());
+        }
+
+        private void UpdateState(object arg)
+        {
+            // Disable The Button
+            Button.interactable = (bool)arg;
+        }
+
     }
 }
