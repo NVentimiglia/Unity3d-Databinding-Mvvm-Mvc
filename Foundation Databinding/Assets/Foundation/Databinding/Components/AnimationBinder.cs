@@ -23,6 +23,7 @@ namespace Foundation.Databinding.Components
         {
             BindingName = "AnimationClip",
             Filters = BindingFilter.Properties,
+            //TODO : Enum support would be nice
             FilterTypes = new[] { typeof(string) }
         };
         
