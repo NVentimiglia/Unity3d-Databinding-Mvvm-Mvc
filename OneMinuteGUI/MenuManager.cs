@@ -11,7 +11,7 @@ using UnityEngine;
 // USE :
 // 1) Augment MenuViewEnum with the views you need
 // 2) Move MenuView into it's own File.
-// 3) Place MenuView on the root of each view canvas
+// 3) Place MenuView with its respective view gameObject.
 // 4) Place MenuManager with your viewmodel in a static location
 // 5) Register the view(s) root container with the MenuManager
 // 6) Call MenuManager.Open(id) and MenuManager.Back() to transition between views.
