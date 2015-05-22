@@ -18,7 +18,7 @@ public enum StarsEnum
     Three
 }
 
-public class MainViewModel : ObservableBehaviour
+public class GameViewModel : ObservableBehaviour
 {
 
     public int[] StarScores = {100,250,600};
