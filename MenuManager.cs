@@ -10,9 +10,10 @@ using UnityEngine;
 
 // USE :
 // 1) Augment MenuViewEnum with the views you need
-// 2) Place MenuView on the root of each view canvas
-// 3) Place MenuManager with your viewmodel in a static location
-// 4) Call MenuManager.Open(id) and MenuManager.Back() to transition between views.
+// 2) Move MenuView into it's own File.
+// 3) Place MenuView on the root of each view canvas
+// 4) Place MenuManager with your viewmodel in a static location
+// 5) Call MenuManager.Open(id) and MenuManager.Back() to transition between views.
 
 /// <summary>
 /// View Identifier
