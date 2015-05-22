@@ -23,7 +23,7 @@ public class GameViewModel : ObservableBehaviour
 
     public int[] StarScores = {100,250,600};
 
-    public string Leaderboard = "CgkIzci20KsaEAIQAA";
+    public string Leaderboard = "<Add Id Here>";
 
     private bool _sound;
     public bool EnableSound
