@@ -126,7 +126,7 @@ I have included a AudioManager in this library. The AudioManager extends Unity's
 - I used a single ViewModel for the entire project.
 - IsVisible and transition logic was delegated to OMG.
 - If a part of the code was complex, I partended it into a sub model using ObservableObject.
-- I used a [Custom MenuManager](https://github.com/NVentimiglia/Unity3d-Databinding-Mvvm-Mvc/blob/master/MenuManager.cs) which provided better programmic access.
+- I used a [Custom MenuManager](https://github.com/NVentimiglia/Unity3d-Databinding-Mvvm-Mvc/blob/master/OneMinuteGUI/MenuManager.cs) which provided better programmic access.
 - [Example MainViewModel for One Minute GUI](https://github.com/NVentimiglia/Unity3d-Databinding-Mvvm-Mvc/blob/master/OneMinuteGUI/GameViewModel.cs)
 
 
