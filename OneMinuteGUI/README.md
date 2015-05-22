@@ -1,6 +1,6 @@
 #### One Minute GUI
 
-[One Minute GUI](https://www.assetstore.unity3d.com/en/#!/content/32346) is a really easy to use and well designed presentation layer. I personally use it in my projects for casual games (Like [GhostHunter VR](http://ghosthuntervr.com). Here are some steps to integrate it with Unity3d Databinding.
+[One Minute GUI](https://www.assetstore.unity3d.com/en/#!/content/32346) is a really easy to use and well designed presentation layer. I personally use it in my projects for casual games (Like [GhostHunter VR](http://ghosthuntervr.com)). Here are some steps to integrate it with Unity3d Databinding.
 
 - I used a single ViewModel for the entire project.
 - IsVisible and transition logic was delegated to OMG.
