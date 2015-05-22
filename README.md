@@ -119,6 +119,17 @@ I have included a AudioManager in this library. The AudioManager extends Unity's
 - **AudioRegulator** : Attach to AudioSources to regulate audio volume by layers (music, ui, ect)
 - **AudioManager** : A Clr manager for mediating changes to layer volumes.
 
+#### One Minute GUI
+
+[One Minute GUI](https://www.assetstore.unity3d.com/en/#!/content/32346) is a really easy to use and well designed presentation layer. I personally use it in my projects for casual games (Like [GhostHunter VR](http://ghosthuntervr.com). Here are some steps to integrate it with Unity3d Databinding.
+
+- I used a single ViewModel for the entire project.
+- IsVisible and transition logic was delegated to OMG.
+- If a part of the code was complex, I partended it into a sub model using ObservableObject.
+- I used a [Custom MenuManager](https://github.com/NVentimiglia/Unity3d-Databinding-Mvvm-Mvc/blob/master/MenuManager.cs) which provided better programmic access.
+- [Example MainViewModel for One Minute GUI](https://github.com/NVentimiglia/Unity3d-Databinding-Mvvm-Mvc/blob/master/OneMinuteGUI/GameViewModel.cs)
+
+
 ## More
 
 Part of the Unity3d Foundation toolkit. A collection of utilities for making high quality data driven games. http://unity3dFoundation.com
