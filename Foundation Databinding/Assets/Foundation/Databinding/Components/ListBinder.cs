@@ -62,25 +62,25 @@ namespace Foundation.Databinding.Components
         {
             RectTransform = GetComponent<RectTransform>();
             RectTransform2 = Prefab.GetComponent<RectTransform>();
-
-            if (Prefab)
-            {
-                if (Application.isPlaying)
-                    Prefab.transform.SetParent(transform.parent);
-                Prefab.SetActive(false);
-
-                if (Prefab.GetComponent<BindingContext>() == null)
-                {
-                    Debug.LogError("template item must have an Root.");
-                    enabled = false;
-                }
-            }
-
-            if (LoadingMask)
-                LoadingMask.SetActive(false);
-
             Init();
 
+            if (Application.isPlaying)
+            {
+                if (Prefab)
+                {
+                    Prefab.transform.SetParent(transform.parent);
+                    Prefab.SetActive(false);
+
+                    if (Prefab.GetComponent<BindingContext>() == null)
+                    {
+                        Debug.LogError("template item must have an Root.");
+                        enabled = false;
+                    }
+                }
+
+                if (LoadingMask)
+                    LoadingMask.SetActive(false);
+            }
         }
 
         public override void Init()

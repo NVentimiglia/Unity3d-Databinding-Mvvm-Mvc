@@ -213,7 +213,6 @@ namespace Foundation.Databinding.View
 
             if (BindingProxy != null && Context == null)
                 Debug.LogError("Invalid BindingProxy. Please bind to a BindingContext or its child.");
-
         }
 
       
