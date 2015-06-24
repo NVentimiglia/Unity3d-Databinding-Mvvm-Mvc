@@ -20,9 +20,6 @@ namespace Foundation.Databinding.Components
         protected Slider Target;
 
         [HideInInspector]
-        public BindingInfo ValueBinding = new BindingInfo { BindingName = "Value" };
-
-        [HideInInspector]
         public BindingInfo EnabledBinding = new BindingInfo { BindingName = "Enabled" };
 
         [HideInInspector]
@@ -30,6 +27,9 @@ namespace Foundation.Databinding.Components
 
         [HideInInspector]
         public BindingInfo MaxValue = new BindingInfo { BindingName = "MaxValue" };
+
+		[HideInInspector]
+		public BindingInfo ValueBinding = new BindingInfo { BindingName = "Value" };
 
         protected bool IsInit;
 
